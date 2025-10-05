@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Student Homepage</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Amatic+SC:700&display=swap');
+        body {
+            font-family: 'Avenir Light', 'Avenir', 'Segoe UI', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #444;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 32px 16px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-family: 'Amatic SC', cursive;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+        .header-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center 10%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        header p {
+            font-size: 1.1rem;
+            color: #555;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        nav a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 4px 0;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.2s;
+        }
+        nav a:hover {
+            border-bottom: 2px solid #1a73e8;
+        }
+        section {
+            margin-bottom: 40px;
+            color: #444;
+            background: none;
+            border-radius: 0;
+            box-shadow: none;
+            padding: 0;
+            transition: none;
+        }
+        section:hover {
+            box-shadow: none;
+        }
+        section h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 18px;
+            color: #222;
+            letter-spacing: 0.5px;
+            border-left: 4px solid #888;
+            padding-left: 12px;
+        }
+        .video-list,
+        .image-list,
+        .blog-list,
+        .project-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .video-list li,
+        .image-list li,
+        .blog-list li,
+        .project-list li {
+            margin-bottom: 16px;
+        }
+        .placeholder {
+            display: inline-block;
+            background: #f2f2f2;
+            color: #888;
+            padding: 16px;
+            border-radius: 4px;
+            font-size: 1rem;
+            position: relative;
+        }
+        .copy-btn {
+            display: none;
+            position: absolute;
+            right: -40px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .placeholder:hover .copy-btn {
+            display: inline-block;
+        }
+        .copy-btn:active {
+            background: #14526b;
+        }
+        .youtube-link {
+            color: #fff !important;
+            background: #e62117;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 2px 8px rgba(230,33,23,0.08);
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+        .youtube-link:hover {
+            background: #b31217;
+            box-shadow: 0 4px 16px rgba(230,33,23,0.16);
+        }
+        .blog-link {
+            color: #fff !important;
+            background: #21759b;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 2px 8px rgba(33,117,155,0.08);
+            transition: background 0.2s, box-shadow 0.2s, text-decoration 0.2s;
+        }
+        .blog-link:hover {
+            background: #14526b;
+            box-shadow: 0 4px 16px rgba(33,117,155,0.16);
+            text-decoration: underline;
+        }
+        footer {
+            text-align: center;
+            color: #888;
+            font-size: 0.95rem;
+            margin-top: 48px;
+            padding: 24px 0 0 0;
+            border-top: 1px solid #eee;
+        }
+        /* Modern Contact Section Styles */
+        .contact-modern {
+            width: 100%;
+            padding: 0;
+            position: relative;
+        }
+        .contact-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 18px;
+            color: #222;
+            letter-spacing: 0.5px;
+            border-left: 4px solid #888;
+            padding-left: 12px;
+        }
+        .contact-desc {
+            color: #555;
+            margin-bottom: 18px;
+        }
+        .contact-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 12px 0;
+            font-size: 1.05rem;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .contact-email-btn {
+            background: none;
+            color: #1a73e8;
+            border: none;
+            text-decoration: underline dotted;
+            cursor: pointer;
+            font-size: 1.05rem;
+            padding: 0 2px;
+            border-radius: 2px;
+            transition: text-decoration 0.2s, background 0.2s;
+        }
+        .contact-email-btn:hover, .contact-email-btn:focus {
+            text-decoration: underline solid;
+            outline: none;
+            background: #e3f2fd;
+        }
+        .contact-link {
+            color: #1a73e8;
+            text-decoration: underline;
+            transition: text-decoration 0.2s;
+        }
+        .contact-link:hover {
+            text-decoration: underline solid;
+        }
+        .contact-copied {
+            pointer-events: none;
+            user-select: none;
+            position: fixed;
+            left: 50%;
+            bottom: 32px;
+            transform: translateX(-50%) translateY(12px);
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000;
+        }
+        .contact-copied.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        /* Blogs Section Styles */
+        .blogs-preview {
+            margin-bottom: 40px;
+        }
+        .blogs-flex {
+            display: flex;
+            gap: 32px;
+            align-items: flex-start;
+        }
+        .blogs-main {
+            flex: 2;
+        }
+        .blogs-intro {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            padding: 24px 18px;
+            margin-bottom: 12px;
+        }
+        .latest-title {
+            font-weight: 600;
+            color: #1a73e8;
+        }
+        .latest-context {
+            margin: 12px 0 18px 0;
+            color: #555;
+        }
+        .blogs-sidebar {
+            flex: 1;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            padding: 18px 14px;
+        }
+        .blogs-sidebar h4 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            color: #1a73e8;
+        }
+        .blogs-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .blog-preview {
+            display: block;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            text-decoration: none;
+            color: #444;
+            transition: background 0.2s;
+        }
+        .blog-preview:hover {
+            background: #f5f5f5;
+        }
+        .blog-title {
+            font-weight: 600;
+            color: #222;
+            display: block;
+        }
+        .blog-snippet {
+            font-size: 0.95rem;
+            color: #888;
+            display: block;
+        }
+        .section-title-link {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .section-title-link:hover {
+            color: #1a73e8;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 12px 4px;
+            }
+            section {
+                padding: 14px 6px;
+                margin-bottom: 24px;
+            }
+            section h2 {
+                font-size: 1.15rem;
+                padding-left: 8px;
+            }
+            .blogs-flex {
+                flex-direction: column;
+            }
+            .blogs-main, .blogs-sidebar {
+                flex: 1;
+            }
+        }
+        @media (max-width: 800px) {
+            .blogs-flex {
+                flex-direction: column;
+                gap: 0;
+            }
+            .blogs-sidebar {
+                margin-top: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hi, I'm Siddharth <img src="images/bicycle.jpeg" alt="Bicycle" class="header-image"></h1>
+            <p>High School Student | Mathematics Enthusiast</p>
+        </header>
+        <nav>
+            <a href="#about">About</a>
+            <a href="#blogs">Blogs</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+            <a href="timeline.html">Timeline</a>
+            <a href="https://www.youtube.com/@numbersmatter2174" target="_blank" title="YouTube Channel" style="padding:0 0 0 8px; display:flex; align-items:center;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#e62117" style="vertical-align:middle;"><path d="M23.498 6.186a2.994 2.994 0 0 0-2.112-2.112C19.136 3.5 12 3.5 12 3.5s-7.136 0-9.386.574a2.994 2.994 0 0 0-2.112 2.112C0 8.436 0 12 0 12s0 3.564.502 5.814a2.994 2.994 0 0 0 2.112 2.112C4.864 20.5 12 20.5 12 20.5s7.136 0 9.386-.574a2.994 2.994 0 0 0 2.112-2.112C24 15.564 24 12 24 12s0-3.564-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
+        </nav>
+        <section id="about">
+            <h2>About Me</h2>
+            <p>Hello! I'm a high school student passionate about mathematics, problem solving, and sharing knowledge. I enjoy exploring new math concepts, participating in competitions, and collaborating on STEM projects.</p>
+        </section>
+        <section id="blogs" class="blogs-preview">
+            <h2><a href="https://numbersmatter.blog" target="_blank" class="section-title-link">NumbersMatter Blog</a></h2>
+            <div class="blogs-flex">
+                <div class="blogs-main">
+                    <div class="blogs-intro">
+                        <h3>Latest Post: <span class="latest-title">Explorations in Introductory Representation Theory</span></h3>
+                        <p class="latest-context">In this post, we aim to glean as much as we can about the characters of the symmetric groups (today we’ll be focusing on S_3 and S_4) using simple properties of characters.</p>
+                        <a href="https://numbersmatter.blog/2025/09/21/exploring-representations-of-symmetric-groups/" target="_blank" class="blog-link">Read Full Post</a>
+                    </div>
+                </div>
+                <aside class="blogs-sidebar">
+                    <h4>Recent Posts</h4>
+                    <ul class="blogs-list">
+                        <li>
+                            <a href="https://numbersmatter.blog/2025/07/05/from-integers-to-rings-and-ideals-an-introduction-to-algebraic-number-theory/" target="_blank" class="blog-preview">
+                                <span class="blog-title">From Integers to Rings and Ideals: An Introduction to Algebraic Number Theory</span>
+                                <span class="blog-snippet">Introduction to Algebraic Number Theory</span>
+                            </a>
+                        </li>
+                    </ul>
+                </aside>
+            </div>
+        </section>
+        <section id="projects">
+            <h2>Projects & Research</h2>
+            <ul class="project-list">
+                <li><span class="placeholder">Research Article (placeholder)</span></li>
+                <li><span class="placeholder">Robotics Project (placeholder)</span></li>
+                <li><span class="placeholder">Geography Project (placeholder)</span></li>
+            </ul>
+        </section>
+        <section id="images">
+            <h2>Images</h2>
+            <ul class="image-list">
+                <li><span class="placeholder">Image 1 (placeholder)</span></li>
+                <li><span class="placeholder">Image 2 (placeholder)</span></li>
+            </ul>
+        </section>
+        <section id="contact" class="contact-modern">
+            <h2 class="contact-title">Get in Touch</h2>
+            <p class="contact-desc">Feel free to reach out if you'd like to chat or collaborate.</p>
+            <ul class="contact-list">
+                <li class="contact-item">
+                    <span>Email:</span>
+                    <button type="button" class="contact-email-btn" onclick="copyModernEmail()" aria-live="polite">spacersid1331@gmail.com</button>
+                    <span class="sr-only">(click to copy)</span>
+                </li>
+                <li>GitHub: <a href="https://github.com/spacersid1331" class="contact-link" target="_blank" rel="noreferrer">spacersid1331</a></li>
+    
+            </ul>
+            <div id="contact-copied" class="contact-copied">Email copied!</div>
+        </section>
+        </section>
+        <footer>
+            &copy; 2025 Math Student. Minimal, professional, and content-focused.
+        </footer>
+    </div>
+</body>
+<script>
+function copyModernEmail() {
+    var email = document.querySelector('.contact-email-btn').textContent.trim();
+    navigator.clipboard.writeText(email).then(function() {
+        var copied = document.getElementById('contact-copied');
+        copied.classList.add('show');
+        setTimeout(function() {
+            copied.classList.remove('show');
+        }, 1200);
+    });
+}
+</script>
+</html>
