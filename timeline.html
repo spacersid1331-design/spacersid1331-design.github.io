@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mazes, My Mind and More</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Amatic+SC:700&display=swap');
+        body {
+            font-family: 'Avenir Light', 'Avenir', 'Segoe UI', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #444;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 32px 16px;
+        }
+        .nav-back {
+            position: absolute;
+            left: 32px;
+            top: 32px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-back:hover {
+            text-decoration: underline;
+        }
+        .page-title {
+            font-family: 'Amatic SC', cursive;
+            font-size: 2.6rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 10px;
+            color: #222;
+        }
+        .intro-text {
+            text-align: center;
+            font-size: 1.15rem;
+            margin-bottom: 32px;
+            color: #555;
+        }
+        .gallery-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+        .gallery-section {
+            width: 100%;
+            margin-bottom: 0;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            padding: 24px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .gallery-section h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: 'Amatic SC', cursive;
+            margin-bottom: 18px;
+            color: #222;
+            letter-spacing: 0.5px;
+            border-left: 4px solid #888888;
+            padding-left: 12px;
+            text-align: left;
+            width: 100%;
+        }
+        .stacked-images {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            margin-bottom: 18px;
+        }
+        .stacked-img {
+            position: absolute;
+            width: 280px;
+            height: auto;
+            max-height: 200px;
+            object-fit: contain;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            transform-origin: center;
+        }
+        .stacked-images.scattered .stacked-img:nth-child(1) { transform: rotate(-5deg) translateX(-10px); z-index: 3; }
+        .stacked-images.scattered .stacked-img:nth-child(2) { transform: rotate(3deg) translate(10px, 15px); z-index: 2; }
+        .stacked-images.scattered .stacked-img:nth-child(3) { transform: rotate(-2deg) translate(-5px, 30px); z-index: 1; }
+        .stacked-images.expanded .stacked-img {
+            position: relative;
+            transform: none !important;
+            margin: 10px;
+            width: 180px;
+            height: auto;
+            max-height: 140px;
+        }
+        .stacked-images.expanded {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            height: auto;
+        }
+        .gallery-section .stack-btn {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            margin-top: 12px;
+            display: none;
+        }
+        .gallery-section .stack-btn.visible {
+            display: block;
+        }
+        .fullscreen-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .fullscreen-modal.active {
+            display: flex;
+        }
+        .fullscreen-modal img {
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+        .fullscreen-modal .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 10px;
+        }
+        .stacked-img.selected {
+            z-index: 10;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+            transform: scale(1.12);
+        }
+        .gallery-thumbs {
+            display: none;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+        .gallery-thumbs.active {
+            display: flex;
+        }
+        .thumb-img {
+            width: 90px;
+            height: 65px;
+            object-fit: cover;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+            transition: box-shadow 0.2s;
+        }
+        .thumb-img.selected {
+            box-shadow: 0 2px 12px #1a73e8;
+        }
+        .enlarged-img {
+            display: none;
+            margin-top: 18px;
+            max-width: 480px;
+            max-height: 340px;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+        }
+        .enlarged-img.active {
+            display: block;
+        }
+        @media (max-width: 900px) {
+            .gallery-grid {
+                flex-direction: column;
+                gap: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="fullscreen-modal" id="fullscreen-modal">
+        <button class="close-modal" onclick="closeFullscreen()">&times;</button>
+        <img id="fullscreen-img" src="" alt="Fullscreen view">
+    </div>
+    <div class="container">
+        <a href="index.html" class="nav-back">← Back to Homepage</a>
+        <div class="page-title">Mazes, Drawings and More</div>
+        <div class="intro-text">Write your introduction here about the timeline, your creative journey, or what these sections mean to you.</div>
+        <div class="gallery-grid">
+            <section class="gallery-section" id="maze-section">
+                <h2>Mazes</h2>
+                <div class="stacked-images scattered" id="maze-stack">
+                
+                    <img src="images/mazes/maze2.jpg" alt="Maze 2" class="stacked-img" />
+                    <img src="images/mazes/maze3.jpg" alt="Maze 3" class="stacked-img" />
+                    <img src="images/mazes/maze4.jpg" alt="Maze 4" class="stacked-img" />
+                    <img src="images/mazes/maze6.jpg" alt="Maze 6" class="stacked-img" />
+                    <img src="images/mazes/maze9.jpg" alt="Maze 9" class="stacked-img" />
+
+                </div>
+                <button class="stack-btn" id="maze-stack-btn">Stack Images</button>
+                <div class="gallery-thumbs" id="maze-thumbs">
+                    <img src="maze1.jpg" alt="Maze 1" class="thumb-img" />
+                    <img src="maze2.jpg" alt="Maze 2" class="thumb-img" />
+                    <img src="maze3.jpg" alt="Maze 3" class="thumb-img" />
+                </div>
+                <img src="maze1.jpg" alt="Maze Enlarged" class="enlarged-img" id="maze-enlarged" />
+            </section>
+            <section class="gallery-section" id="drawings-section">
+                <h2>Drawings</h2>
+                <div class="stacked-images scattered" id="drawings-stack">
+                    <img src="images/drawings/draw1.jpeg" alt="Drawing 1" class="stacked-img" />
+                    <img src="images/drawings/draw2.jpeg" alt="Drawing 2" class="stacked-img" />
+                    <img src="images/drawings/draw3.jpeg" alt="Drawing 3" class="stacked-img" />
+                    <img src="images/drawings/draw4.jpeg" alt="Drawing 4" class="stacked-img" />
+                    <img src="images/drawings/draw5.jpeg" alt="Drawing 5" class="stacked-img" />
+                    <img src="images/drawings/draw6.jpeg" alt="Drawing 6" class="stacked-img" />
+                    <img src="images/drawings/draw7.jpeg" alt="Drawing 7" class="stacked-img" />
+                    <img src="images/drawings/draw8.jpeg" alt="Drawing 8" class="stacked-img" />
+                    <img src="images/drawings/draw9.jpeg" alt="Drawing 9" class="stacked-img" />
+                    <img src="images/drawings/draw10.jpeg" alt="Drawing 10" class="stacked-img" />
+                    <img src="images/drawings/draw11.jpeg" alt="Drawing 11" class="stacked-img" />
+                    <img src="images/drawings/draw12.jpeg" alt="Drawing 12" class="stacked-img" />
+                    <img src="images/drawings/draw13.jpeg" alt="Drawing 13" class="stacked-img" />
+                </div>
+                <button class="stack-btn" id="drawings-stack-btn">Stack Images</button>
+                <div class="gallery-thumbs" id="drawings-thumbs">
+                    <img src="/images/drawings/draw1.jpeg" alt="Drawing 1" class="thumb-img" />
+                    <img src="/images/drawings/draw2.jpeg" alt="Drawing 2" class="thumb-img" />
+                </div>
+                <img src="/images/drawings/draw1.jpeg" alt="Drawing Enlarged" class="enlarged-img" id="drawings-enlarged" />
+            </section>
+            <section class="gallery-section" id="more-section">
+                <h2>More</h2>
+                <div class="stacked-images scattered" id="more-stack">
+                    <img src="more1.jpg" alt="More 1" class="stacked-img" />
+                </div>
+                <button class="stack-btn" id="more-stack-btn">Stack Images</button>
+                <div class="gallery-thumbs" id="more-thumbs">
+                    <img src="more1.jpg" alt="More 1" class="thumb-img" />
+                </div>
+                <img src="more1.jpg" alt="More Enlarged" class="enlarged-img" id="more-enlarged" />
+            </section>
+        </div>
+    </div>
+    <script>
+    // Gallery logic for each section
+    function openFullscreen(imgSrc) {
+        const modal = document.getElementById('fullscreen-modal');
+        const modalImg = document.getElementById('fullscreen-img');
+        modalImg.src = imgSrc;
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeFullscreen() {
+        const modal = document.getElementById('fullscreen-modal');
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function setupGallery(stackId) {
+        const stack = document.getElementById(stackId);
+        const stackBtn = document.getElementById(stackId + '-btn');
+        const stackImgs = stack.querySelectorAll('.stacked-img');
+        
+        // Click on stack to expand
+        stack.addEventListener('click', (e) => {
+            if (e.target.classList.contains('stacked-img')) {
+                if (!stack.classList.contains('expanded')) {
+                    // First click - expand all images
+                    stack.classList.remove('scattered');
+                    stack.classList.add('expanded');
+                    stackBtn.classList.add('visible');
+                } else {
+                    // Click on thumbnail - show fullscreen
+                    openFullscreen(e.target.src);
+                }
+            }
+        });
+
+        // Stack button to restore stack view
+        stackBtn.addEventListener('click', () => {
+            stack.classList.remove('expanded');
+            stack.classList.add('scattered');
+            stackBtn.classList.remove('visible');
+            if (expandedImage) {
+                expandedImage.style.transform = '';
+                expandedImage.style.position = '';
+                expandedImage = null;
+            }
+        });
+    }
+    setupGallery('maze-stack');
+    setupGallery('drawings-stack');
+    setupGallery('more-stack');
+    </script>
+</body>
+</html>
