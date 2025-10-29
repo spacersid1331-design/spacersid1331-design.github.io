@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mazes, My Mind and More</title>
+    <title>Explorations</title>
     <style>
         @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap');
         @import url('https://fonts.googleapis.com/css?family=Amatic+SC:700&display=swap');
@@ -36,6 +36,14 @@
         .page-title {
             font-family: 'Amatic SC', cursive;
             font-size: 2.6rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 10px;
+            color: #222;
+        }
+        .page-titleLB {
+            font-family: 'Amatic SC', cursive;
+            font-size: 1.3rem;
             font-weight: 700;
             text-align: center;
             margin-bottom: 10px;
@@ -75,6 +83,106 @@
             text-align: left;
             width: 100%;
         }
+        /* Horizontal Carousel Style */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .carousel-track {
+            display: flex;
+            gap: 0;
+            transition: transform 0.5s ease-in-out;
+            height: 100%;
+        }
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .carousel-slide img {
+            height: 100%;
+            width: 50%;
+            object-fit: contain;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .slide-content {
+            flex: 1;
+            padding: 0 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+        }
+        .slide-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+        }
+        .slide-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #666;
+            margin: 0;
+        }
+        .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #333;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        .carousel-button:hover {
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .carousel-button.prev {
+            left: 20px;
+        }
+        .carousel-button.next {
+            right: 20px;
+        }
+        .carousel-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .carousel-dot.active {
+            background: #1a73e8;
+            transform: scale(1.2);
+        }
+        /* Keep existing stacked images style for other sections */
         .stacked-images {
             position: relative;
             height: 300px;
@@ -93,6 +201,10 @@
             transition: all 0.4s ease;
             transform-origin: center;
         }
+        .stacked-img:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            transform: scale(1.05);
+        }
         .stacked-images.scattered .stacked-img:nth-child(1) { transform: rotate(-5deg) translateX(-10px); z-index: 3; }
         .stacked-images.scattered .stacked-img:nth-child(2) { transform: rotate(3deg) translate(10px, 15px); z-index: 2; }
         .stacked-images.scattered .stacked-img:nth-child(3) { transform: rotate(-2deg) translate(-5px, 30px); z-index: 1; }
@@ -103,6 +215,10 @@
             width: 180px;
             height: auto;
             max-height: 140px;
+        }
+        .stacked-images.expanded .stacked-img:hover {
+            transform: scale(1.08) !important;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
         }
         .stacked-images.expanded {
             display: flex;
@@ -156,11 +272,6 @@
             border: none;
             padding: 10px;
         }
-        .stacked-img.selected {
-            z-index: 10;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.18);
-            transform: scale(1.12);
-        }
         .gallery-thumbs {
             display: none;
             gap: 12px;
@@ -193,6 +304,38 @@
         .enlarged-img.active {
             display: block;
         }
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            width: 100%;
+            margin-bottom: 18px;
+        }
+        .video-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .video-item video {
+            width: 100%;
+            max-width: 220px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            background: #000;
+            transition: box-shadow 0.2s;
+        }
+        .video-item video:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        }
+        .video-title {
+            font-size: 0.95rem;
+            color: #555;
+            text-align: center;
+            margin: 0;
+            font-weight: 500;
+        }
         @media (max-width: 900px) {
             .gallery-grid {
                 flex-direction: column;
@@ -202,122 +345,528 @@
     </style>
 </head>
 <body>
-    <div class="fullscreen-modal" id="fullscreen-modal">
-        <button class="close-modal" onclick="closeFullscreen()">&times;</button>
+    <div class="fullscreen-modal" id="fullscreen-modal" role="dialog" aria-modal="true" aria-label="Image preview" tabindex="-1" aria-hidden="true">
+        <button class="close-modal" id="close-fullscreen" aria-label="Close preview">&times;</button>
         <img id="fullscreen-img" src="" alt="Fullscreen view">
     </div>
-    <div class="container">
+    <div class="container" id="main-content">
         <a href="index.html" class="nav-back">← Back to Homepage</a>
-        <div class="page-title">Mazes, Drawings and More</div>
-        <div class="intro-text">Write your introduction here about the timeline, your creative journey, or what these sections mean to you.</div>
+        <div class="page-title">Explorations</div>
+        <div class="page-titleLB">Looking Back</div>
+        <div class="intro-text">2016 - 2022</div>
         <div class="gallery-grid">
             <section class="gallery-section" id="maze-section">
                 <h2>Mazes</h2>
-                <div class="stacked-images scattered" id="maze-stack">
-                
-                    <img src="images/mazes/maze2.jpg" alt="Maze 2" class="stacked-img" />
-                    <img src="images/mazes/maze3.jpg" alt="Maze 3" class="stacked-img" />
-                    <img src="images/mazes/maze4.jpg" alt="Maze 4" class="stacked-img" />
-                    <img src="images/mazes/maze6.jpg" alt="Maze 6" class="stacked-img" />
-                    <img src="images/mazes/maze9.jpg" alt="Maze 9" class="stacked-img" />
-
+                <div class="carousel-container">
+                    <button class="carousel-button prev" onclick="moveCarousel(-1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(1)">→</button>
+                    <div class="carousel-track" id="mazeCarousel">
+                        <div class="carousel-slide">
+                            <img src="images/mazes/maze2.jpg" alt="Maze 1" onclick="openFullscreen(this.src, this.alt)">
+                            <div class="slide-content">
+                               <!-- <h3 class="slide-title">Maze 1</h3> -->
+                                <p class="slide-description">I loved drawing mazes, trying to imagine the most unlikely path — one that twisted its way from start to finish.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/mazes/maze3.jpg" alt="Maze 2" onclick="openFullscreen(this.src, this.alt)">
+                            <div class="slide-content">
+                               <!-- <h3 class="slide-title">Maze 2</h3> -->
+                                <p class="slide-description">I loved drawing mazes, trying to imagine the most unlikely path — one that twisted its way from start to finish.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/mazes/maze4.jpg" alt="Maze 3" onclick="openFullscreen(this.src, this.alt)">
+                            <div class="slide-content">
+                               <!-- <h3 class="slide-title">Maze 3</h3> -->
+                                <p class="slide-description">I loved drawing mazes, trying to imagine the most unlikely path — one that twisted its way from start to finish.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/mazes/maze6.jpg" alt="Maze 4" onclick="openFullscreen(this.src, this.alt)">
+                            <div class="slide-content">
+                               <!-- <h3 class="slide-title">Maze 4</h3> -->
+                                <p class="slide-description">I loved drawing mazes, trying to imagine the most unlikely path — one that twisted its way from start to finish.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/mazes/maze5.jpg" alt="Maze 5" onclick="openFullscreen(this.src, this.alt)">
+                            <div class="slide-content">
+                               <!-- <h3 class="slide-title">Maze 5</h3> -->
+                                <p class="slide-description">I loved drawing mazes, trying to imagine the most unlikely path — one that twisted its way from start to finish.</p>
+                            </div>
+                        </div>
+                         <div class="carousel-slide">
+                            <img src="images/mazes/maze9.jpg" alt="Maze 6" onclick="openFullscreen(this.src, this.alt)">
+                            <div class="slide-content">
+                               <!-- <h3 class="slide-title">Maze 6</h3> -->
+                                <p class="slide-description">I loved drawing mazes, trying to imagine the most unlikely path — one that twisted its way from start to finish.</p>
+                            </div>
+                        </div>  
+                     <div class="carousel-slide">
+                            <img src="images/drawings/draw4.jpeg" alt="Maze 7" onclick="openFullscreen(this.src, this.alt)">
+                            <div class="slide-content">
+                               <!-- <h3 class="slide-title">Maze 7</h3> -->
+                                <p class="slide-description">I loved drawing mazes, trying to imagine the most unlikely path — one that twisted its way from start to finish.</p>
+                            </div>
+                        </div>                                              
+                    </div>
+                    <div class="carousel-dots" id="mazeDots"></div>
                 </div>
-                <button class="stack-btn" id="maze-stack-btn">Stack Images</button>
-                <div class="gallery-thumbs" id="maze-thumbs">
-                    <img src="maze1.jpg" alt="Maze 1" class="thumb-img" />
-                    <img src="maze2.jpg" alt="Maze 2" class="thumb-img" />
-                    <img src="maze3.jpg" alt="Maze 3" class="thumb-img" />
+            </section>
+            
+            <section class="gallery-section" id="making-mazes-section">
+                <h2>Making of Mazes</h2>
+                <div class="carousel-container">
+                    <button class="carousel-button prev" onclick="moveMakingMazesCarousel(-1)">←</button>
+                    <button class="carousel-button next" onclick="moveMakingMazesCarousel(1)">→</button>
+                    <div class="carousel-track" id="makingMazesCarousel">
+                        <div class="carousel-slide">
+                            <img src="images/making mazes/Making-1.jpg" alt="Making of Maze Step 1" onclick="openFullscreen(this.src, this.alt)">
+                            <div class="slide-content">
+                                <!-- <h3 class="slide-title">Making of Maze - Step 1</h3> -->
+                                <p class="slide-description">The initial stage of maze creation</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/making mazes/Making-2.jpg" alt="Making of Maze Step 2" onclick="openFullscreen(this.src, this.alt)">
+                            <div class="slide-content">
+                                <!-- <h3 class="slide-title">Making of Maze - Step 2</h3> -->
+                                <p class="slide-description">Building upon the foundation</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/making mazes/Making-3.jpg" alt="Making of Maze Step 3" onclick="openFullscreen(this.src, this.alt)">
+                            <div class="slide-content">
+                                <!-- <h3 class="slide-title">Making of Maze - Step 3</h3> -->
+                                <p class="slide-description">Adding complexity and detail to the maze structure</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/making mazes/Making-4.jpg" alt="Making of Maze Step 4" onclick="openFullscreen(this.src, this.alt)">
+                            <div class="slide-content">
+                                <!-- <h3 class="slide-title">Making of Maze - Step 4</h3> -->
+                                <p class="slide-description">Further refinement of the maze with the addition of intricate pathways and challenging elements.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-dots" id="makingMazesDots"></div>
                 </div>
-                <img src="maze1.jpg" alt="Maze Enlarged" class="enlarged-img" id="maze-enlarged" />
             </section>
             <section class="gallery-section" id="drawings-section">
-                <h2>Drawings</h2>
-                <div class="stacked-images scattered" id="drawings-stack">
-                    <img src="images/drawings/draw1.jpeg" alt="Drawing 1" class="stacked-img" />
-                    <img src="images/drawings/draw2.jpeg" alt="Drawing 2" class="stacked-img" />
-                    <img src="images/drawings/draw3.jpeg" alt="Drawing 3" class="stacked-img" />
-                    <img src="images/drawings/draw4.jpeg" alt="Drawing 4" class="stacked-img" />
-                    <img src="images/drawings/draw5.jpeg" alt="Drawing 5" class="stacked-img" />
-                    <img src="images/drawings/draw6.jpeg" alt="Drawing 6" class="stacked-img" />
-                    <img src="images/drawings/draw7.jpeg" alt="Drawing 7" class="stacked-img" />
-                    <img src="images/drawings/draw8.jpeg" alt="Drawing 8" class="stacked-img" />
-                    <img src="images/drawings/draw9.jpeg" alt="Drawing 9" class="stacked-img" />
-                    <img src="images/drawings/draw10.jpeg" alt="Drawing 10" class="stacked-img" />
-                    <img src="images/drawings/draw11.jpeg" alt="Drawing 11" class="stacked-img" />
-                    <img src="images/drawings/draw12.jpeg" alt="Drawing 12" class="stacked-img" />
-                    <img src="images/drawings/draw13.jpeg" alt="Drawing 13" class="stacked-img" />
+                <h2>Plans</h2>
+                <div class="carousel-container">
+                    <button class="carousel-button prev" onclick="moveDrawingsCarousel(-1)">←</button>
+                    <button class="carousel-button next" onclick="moveDrawingsCarousel(1)">→</button>
+                    <div class="carousel-track" id="drawingsCarousel">
+                        <div class="carousel-slide">
+                            <img src="images/drawings/draw1.jpeg" alt="Drawing 1" onclick="openFullscreen(this.src, this.alt)">
+                            <div class="slide-content">
+                               
+                                <p class="slide-description">A few early experiments from my primary / middle-school notebooks — designs for rover wheels, water propulsion systems, and satellites. I’ve always been fascinated by movement and mechanics; these sketches were my way of thinking aloud, exploring how to make ideas — and things — move.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/drawings/draw8.jpeg" alt="Drawing 2" onclick="openFullscreen(this.src, this.alt)">
+                            <div class="slide-content">
+                               
+                                <p class="slide-description">A few early experiments from my primary / middle-school notebooks — designs for rover wheels, water propulsion systems, and satellites. I’ve always been fascinated by movement and mechanics; these sketches were my way of thinking aloud, exploring how to make ideas — and things — move.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/drawings/draw9.jpeg" alt="Drawing 3" onclick="openFullscreen(this.src, this.alt)">
+                            <div class="slide-content">
+
+                                <p class="slide-description">A few early experiments from my primary / middle-school notebooks — designs for rover wheels, water propulsion systems, and satellites. I’ve always been fascinated by movement and mechanics; these sketches were my way of thinking aloud, exploring how to make ideas — and things — move.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/drawings/draw10.jpeg" alt="Drawing 4" onclick="openFullscreen(this.src, this.alt)">
+                            <div class="slide-content">
+
+                                <p class="slide-description">A few early experiments from my primary / middle-school notebooks — designs for rover wheels, water propulsion systems, and satellites. I’ve always been fascinated by movement and mechanics; these sketches were my way of thinking aloud, exploring how to make ideas — and things — move.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/drawings/draw11.jpeg" alt="Drawing 5" onclick="openFullscreen(this.src, this.alt)">
+                            <div class="slide-content">
+
+                                <p class="slide-description">A few early experiments from my primary / middle-school notebooks — designs for rover wheels, water propulsion systems, and satellites. I’ve always been fascinated by movement and mechanics; these sketches were my way of thinking aloud, exploring how to make ideas — and things — move.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/drawings/draw12.jpeg" alt="Drawing 6" onclick="openFullscreen(this.src, this.alt)">
+                            <div class="slide-content">
+
+                                <p class="slide-description">A few early experiments from my primary / middle-school notebooks — designs for rover wheels, water propulsion systems, and satellites. I’ve always been fascinated by movement and mechanics; these sketches were my way of thinking aloud, exploring how to make ideas — and things — move.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/drawings/draw13.jpeg" alt="Drawing 7" onclick="openFullscreen(this.src, this.alt)">
+                            <div class="slide-content">
+
+                                <p class="slide-description">A few early experiments from my primary / middle-school notebooks — designs for rover wheels, water propulsion systems, and satellites. I’ve always been fascinated by movement and mechanics; these sketches were my way of thinking aloud, exploring how to make ideas — and things — move.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-dots" id="drawingsDots"></div>
                 </div>
-                <button class="stack-btn" id="drawings-stack-btn">Stack Images</button>
-                <div class="gallery-thumbs" id="drawings-thumbs">
-                    <img src="/images/drawings/draw1.jpeg" alt="Drawing 1" class="thumb-img" />
-                    <img src="/images/drawings/draw2.jpeg" alt="Drawing 2" class="thumb-img" />
-                </div>
-                <img src="/images/drawings/draw1.jpeg" alt="Drawing Enlarged" class="enlarged-img" id="drawings-enlarged" />
             </section>
             <section class="gallery-section" id="more-section">
-                <h2>More</h2>
-                <div class="stacked-images scattered" id="more-stack">
-                    <img src="more1.jpg" alt="More 1" class="stacked-img" />
+                <h2>Mud Tunnels</h2>
+                <div class="carousel-container">
+                    <button class="carousel-button prev" onclick="moveMudTunnelsCarousel(-1)">←</button>
+                    <button class="carousel-button next" onclick="moveMudTunnelsCarousel(1)">→</button>
+                    <div class="carousel-track" id="mudTunnelsCarousel">
+                        <div class="carousel-slide">
+                            <img src="images/more/mud2.JPG" alt="Mud 2" onclick="openFullscreen(this.src, this.alt)">
+                            <div class="slide-content">
+                                <h3 class="slide-title">Mud Tunnels</h3>
+                                <p class="slide-description">Here, I’ve dug underground tunnels. I especially loved building bridges over exposed patches.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-dots" id="mudTunnelsDots"></div>
                 </div>
-                <button class="stack-btn" id="more-stack-btn">Stack Images</button>
-                <div class="gallery-thumbs" id="more-thumbs">
-                    <img src="more1.jpg" alt="More 1" class="thumb-img" />
+            </section>
+            <section class="gallery-section" id="ido-section">
+                <h2>IDO</h2>
+                <div class="carousel-container">
+                    <button class="carousel-button prev" onclick="moveIDOCarousel(-1)">←</button>
+                    <button class="carousel-button next" onclick="moveIDOCarousel(1)">→</button>
+                    <div class="carousel-track" id="idoCarousel">
+                        <div class="carousel-slide">
+                            <img src="images/drawings/draw6.jpeg" alt="Drawing 6" onclick="openFullscreen(this.src, this.alt)">
+                            <div class="slide-content">
+                                <p>I’ve long been fascinated by motion-converting mechanisms. These plans are for a device that converts linear motion into circular motion, which I incorporated into an Electricity-Generating Shoe (EGS). I developed this as part of the 2019 International Design Olympiad, where I won first place.</p>
+                                <h3 class="slide-title">Design Sketch</h3>
+                                <p class="slide-description">Initial design sketches and concepts for the project.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/more/IDO19-Shoe-Ideate4.jpg" alt="IDO 2019 Shoe Ideate 4" onclick="openFullscreen(this.src, this.alt)">
+                            <div class="slide-content">
+                                <p>I’ve long been fascinated by motion-converting mechanisms. These plans are for a device that converts linear motion into circular motion, which I incorporated into an Electricity-Generating Shoe (EGS). I developed this as part of the 2019 International Design Olympiad, where I won first place.</p>
+                                <h3 class="slide-title">Shoe Ideation</h3>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/more/IDO19-Shoe-Ideate5.jpg" alt="IDO 2019 Shoe Ideate 5" onclick="openFullscreen(this.src, this.alt)">
+                            <div class="slide-content">
+                                <p>I’ve long been fascinated by motion-converting mechanisms. These plans are for a device that converts linear motion into circular motion, which I incorporated into an Electricity-Generating Shoe (EGS). I developed this as part of the 2019 International Design Olympiad, where I won first place.</p>
+                                <h3 class="slide-title">Shoe Ideation</h3>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="images/more/IDO19-Shoe-Ideate6.jpg" alt="IDO 2019 Shoe Ideate 6" onclick="openFullscreen(this.src, this.alt)">
+                            <div class="slide-content">
+                                <p>I’ve long been fascinated by motion-converting mechanisms. These plans are for a device that converts linear motion into circular motion, which I incorporated into an Electricity-Generating Shoe (EGS). I developed this as part of the 2019 International Design Olympiad, where I won first place.</p>
+                                <h3 class="slide-title">Shoe Ideation</h3>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <video width="400" height="300" controls>
+                                <source src="images/more/IDO2019-shoe.MOV" type="video/quicktime">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="slide-content">
+                                <p>I’ve long been fascinated by motion-converting mechanisms. These plans are for a device that converts linear motion into circular motion, which I incorporated into an Electricity-Generating Shoe (EGS). I developed this as part of the 2019 International Design Olympiad, where I won first place.</p>
+                                <h3 class="slide-title">IDO 2019 - Shoe Prototype</h3>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <video width="400" height="300" controls>
+                                <source src="images/more/IDO2020-soundwall.MOV" type="video/quicktime">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="slide-content">
+                                <p>For the 2020 International Design Olympiad, I designed a sound-proof wall, so that I could play squash without waking up my neighbour. Won first place.</p>
+                                <h3 class="slide-title">IDO 2020 - Sound Wall Prototype</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-dots" id="idoDots"></div>
                 </div>
-                <img src="more1.jpg" alt="More Enlarged" class="enlarged-img" id="more-enlarged" />
+            </section>
+
+            <section class="gallery-section" id="videos-section">
+                <h2>Lego</h2>
+                <div class="carousel-container">
+                    <button class="carousel-button prev" onclick="moveVideoCarousel(-1)">←</button>
+                    <button class="carousel-button next" onclick="moveVideoCarousel(1)">→</button>
+                    <div class="carousel-track" id="videoCarousel">
+                        <div class="carousel-slide">
+                            <video width="400" height="300" controls>
+                                <source src="images/more/LegoEv3ObjectPicker.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="slide-content">
+                                <h3 class="slide-title">Lego EV3 Object Picker</h3>
+                               <!-- <p class="slide-description">Lego EV3 robot with object picking capabilities.</p> -->
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <video width="400" height="300" controls>
+                                <source src="images/more/LegoEV3Rubbishpicker.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <!-- <video width="400" height="300" controls>
+                                <source src="images/more/LegoEV3Rubbishpicker.MOV" type="video/quicktime">
+                                Your browser does not support the video tag.
+                            </video> -->
+                            <div class="slide-content">
+                                <h3 class="slide-title">Lego EV3 Rubbish Picker</h3>
+                               <!-- <p class="slide-description">A demonstration of the Lego EV3 Rubbish Picker robot. See how it identifies and collects items, showing the potential of robotics in environmental cleanup.</p> -->
+                            </div>
+                        </div>
+<!--
+                        <div class="carousel-slide">
+                            <video width="400" height="300" controls>
+                                <source src="images/more/lego.MOV" type="video/quicktime">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="slide-content">
+                                <h3 class="slide-title">Lego Project</h3>
+                                <p class="slide-description">A creative Lego project showcasing various mechanical and technical capabilities.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <video width="400" height="300" controls>
+                                <source src="images/more/lego2.MOV" type="video/quicktime">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="slide-content">
+                                <h3 class="slide-title">Lego Project 2</h3>
+                                <p class="slide-description">Another innovative Lego creation demonstrating advanced construction and functionality.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <video width="400" height="300" controls>
+                                <source src="images/more/crane .MOV" type="video/quicktime">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="slide-content">
+                                <h3 class="slide-title">Lego Crane</h3>
+                                <p class="slide-description">A demonstration of a Lego crane mechanism, showcasing mechanical engineering principles and precise control.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <video width="400" height="300" controls>
+                                <source src="images/more/tunnels and more.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="slide-content">
+                                <h3 class="slide-title">Tunnels and More</h3>
+                                <p class="slide-description">Explore this fascinating project featuring tunnels and other creative elements. Watch how different components interact and function together.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <video width="400" height="300" controls>
+                                <source src="images/more/tunnels.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="slide-content">
+                                <h3 class="slide-title">Tunnels Project</h3>
+                                <p class="slide-description">An in-depth look at the tunnels project, demonstrating innovative design and construction techniques.</p>
+                            </div>
+                        </div>
+                    -->
+                    </div>
+                    <div class="carousel-dots" id="videoDots"></div>
+                </div>
             </section>
         </div>
     </div>
     <script>
-    // Gallery logic for each section
-    function openFullscreen(imgSrc) {
+    (function () {
+        // Carousel functionality
+        let currentSlide = 0;
+        const track = document.getElementById('mazeCarousel');
+        const slides = track.getElementsByClassName('carousel-slide');
+        const dotsContainer = document.getElementById('mazeDots');
+
+        // Carousel functionality for all sections
+        function initializeCarousel(carouselId, dotsId, moveFunction) {
+            const track = document.getElementById(carouselId);
+            const slides = track.getElementsByClassName('carousel-slide');
+            const dotsContainer = document.getElementById(dotsId);
+            let currentSlide = 0;
+
+            // Create dots
+            for (let i = 0; i < slides.length; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+                dot.onclick = () => goToSlide(i);
+                dotsContainer.appendChild(dot);
+            }
+
+            // Update dots
+            function updateDots() {
+                const dots = dotsContainer.getElementsByClassName('carousel-dot');
+                for (let i = 0; i < dots.length; i++) {
+                    dots[i].classList.toggle('active', i === currentSlide);
+                }
+            }
+
+            // Go to specific slide
+            function goToSlide(index) {
+                currentSlide = index;
+                track.style.transform = `translateX(-${currentSlide * 100}%)`;
+                updateDots();
+            }
+
+            // Return move function
+            return function(direction) {
+                currentSlide = (currentSlide + direction + slides.length) % slides.length;
+                goToSlide(currentSlide);
+            };
+        }
+
+        // Initialize all carousels
+        window.moveCarousel = initializeCarousel('mazeCarousel', 'mazeDots');
+        window.moveMakingMazesCarousel = initializeCarousel('makingMazesCarousel', 'makingMazesDots');
+        window.moveDrawingsCarousel = initializeCarousel('drawingsCarousel', 'drawingsDots');
+        window.moveMudTunnelsCarousel = initializeCarousel('mudTunnelsCarousel', 'mudTunnelsDots');
+        window.moveIDOCarousel = initializeCarousel('idoCarousel', 'idoDots');
+        window.moveVideoCarousel = initializeCarousel('videoCarousel', 'videoDots');
+
+        // Fullscreen modal functionality
+        const mainContent = document.getElementById('main-content');
         const modal = document.getElementById('fullscreen-modal');
         const modalImg = document.getElementById('fullscreen-img');
-        modalImg.src = imgSrc;
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
+        const closeBtn = document.getElementById('close-fullscreen');
 
-    function closeFullscreen() {
-        const modal = document.getElementById('fullscreen-modal');
-        modal.classList.remove('active');
-        document.body.style.overflow = '';
-    }
+        let lastFocusedElement = null;
+        let modalKeyListener = null;
+        let backdropClickListener = null;
 
-    function setupGallery(stackId) {
-        const stack = document.getElementById(stackId);
-        const stackBtn = document.getElementById(stackId + '-btn');
-        const stackImgs = stack.querySelectorAll('.stacked-img');
-        
-        // Click on stack to expand
-        stack.addEventListener('click', (e) => {
-            if (e.target.classList.contains('stacked-img')) {
+        function getFocusableElements(container) {
+            const selectors = ['a[href]', 'area[href]', 'input:not([disabled]):not([type="hidden"])', 'select:not([disabled])', 'textarea:not([disabled])', 'button:not([disabled])', 'iframe', 'object', 'embed', '[contenteditable]', '[tabindex]:not([tabindex="-1"])'];
+            return Array.from(container.querySelectorAll(selectors.join(','))).filter(el => el.offsetParent !== null || el === closeBtn);
+        }
+
+        function trapTabKey(e) {
+            if (e.key !== 'Tab') return;
+            const focusable = getFocusableElements(modal);
+            if (focusable.length === 0) {
+                e.preventDefault();
+                return;
+            }
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+            }
+        }
+
+        function openFullscreen(imgSrc, altText = '') {
+            lastFocusedElement = document.activeElement;
+            modalImg.src = imgSrc;
+            modalImg.alt = altText || 'Fullscreen view';
+            modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
+            if (mainContent) mainContent.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => closeBtn.focus(), 100);
+            modalKeyListener = (e) => {
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    closeFullscreen();
+                    return;
+                }
+                trapTabKey(e);
+            };
+            document.addEventListener('keydown', modalKeyListener);
+            backdropClickListener = (e) => {
+                if (e.target === modal) closeFullscreen();
+            };
+            modal.addEventListener('click', backdropClickListener);
+        }
+
+        function closeFullscreen() {
+            modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
+            if (mainContent) mainContent.setAttribute('aria-hidden', 'false');
+            modalImg.src = '';
+            document.body.style.overflow = '';
+            if (modalKeyListener) {
+                document.removeEventListener('keydown', modalKeyListener);
+                modalKeyListener = null;
+            }
+            if (backdropClickListener) {
+                modal.removeEventListener('click', backdropClickListener);
+                backdropClickListener = null;
+            }
+            if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+                lastFocusedElement.focus();
+                lastFocusedElement = null;
+            }
+        }
+
+        closeBtn.addEventListener('click', closeFullscreen);
+
+        function setupGallery(stackId) {
+            const stack = document.getElementById(stackId);
+            const stackBtn = document.getElementById(stackId + '-btn');
+            const thumbsContainer = document.getElementById(stackId.replace('-stack', '-thumbs'));
+            const enlargedImg = document.getElementById(stackId.replace('-stack', '-enlarged'));
+            
+            if (!stack || !stackBtn) return;
+
+            let expandedImage = null;
+
+            stack.addEventListener('click', (e) => {
+                const target = e.target;
+                if (!target.classList.contains('stacked-img')) return;
+
                 if (!stack.classList.contains('expanded')) {
-                    // First click - expand all images
                     stack.classList.remove('scattered');
                     stack.classList.add('expanded');
                     stackBtn.classList.add('visible');
+                    if (thumbsContainer) thumbsContainer.classList.add('active');
                 } else {
-                    // Click on thumbnail - show fullscreen
-                    openFullscreen(e.target.src);
+                    openFullscreen(target.src, target.alt || '');
+                    expandedImage = target;
+                    if (enlargedImg) enlargedImg.src = target.src;
                 }
-            }
-        });
+            });
 
-        // Stack button to restore stack view
-        stackBtn.addEventListener('click', () => {
-            stack.classList.remove('expanded');
-            stack.classList.add('scattered');
-            stackBtn.classList.remove('visible');
-            if (expandedImage) {
-                expandedImage.style.transform = '';
-                expandedImage.style.position = '';
-                expandedImage = null;
+            if (thumbsContainer) {
+                const thumbs = thumbsContainer.querySelectorAll('.thumb-img');
+                thumbs.forEach(thumb => {
+                    thumb.addEventListener('click', (e) => {
+                        const fullSrc = thumb.dataset.full || thumb.src;
+                        openFullscreen(fullSrc, thumb.alt || '');
+                        if (enlargedImg) enlargedImg.src = fullSrc;
+                        thumbs.forEach(t => t.classList.remove('selected'));
+                        thumb.classList.add('selected');
+                    });
+                });
             }
-        });
-    }
-    setupGallery('maze-stack');
-    setupGallery('drawings-stack');
-    setupGallery('more-stack');
+
+            stackBtn.addEventListener('click', () => {
+                stack.classList.remove('expanded');
+                stack.classList.add('scattered');
+                stackBtn.classList.remove('visible');
+                if (thumbsContainer) thumbsContainer.classList.remove('active');
+                if (enlargedImg) enlargedImg.classList.remove('active');
+                if (expandedImage) {
+                    expandedImage.style.transform = '';
+                    expandedImage.style.position = '';
+                    expandedImage = null;
+                }
+            });
+        }
+
+        setupGallery('maze-stack');
+        setupGallery('drawings-stack');
+        setupGallery('more-stack');
+    })();
     </script>
 </body>
 </html>
+
