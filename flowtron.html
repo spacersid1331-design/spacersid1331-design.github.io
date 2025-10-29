@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flowtron Project</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Amatic+SC:700&display=swap');
+        body {
+            font-family: 'Avenir Light', 'Avenir', 'Segoe UI', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #444;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 32px 16px;
+        }
+        .nav-back {
+            position: absolute;
+            left: 32px;
+            top: 32px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-back:hover {
+            text-decoration: underline;
+        }
+        .page-title {
+            font-family: 'Amatic SC', cursive;
+            font-size: 2.6rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 10px;
+            color: #222;
+        }
+        .intro-text {
+            text-align: center;
+            font-size: 1.15rem;
+            margin-bottom: 32px;
+            color: #555;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .project-section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .project-section h2 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 16px;
+            border-left: 4px solid #1a73e8;
+            padding-left: 12px;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+            .nav-back {
+                position: relative;
+                left: 0;
+                top: 0;
+                margin-bottom: 24px;
+            }
+            .page-title {
+                font-size: 2rem;
+            }
+            .project-section {
+                padding: 16px;
+            }
+            .carousel-slide {
+                flex-direction: column;
+                padding: 10px;
+            }
+            .carousel-slide video {
+                width: 100%;
+                height: 50%;
+            }
+            .slide-content {
+                padding: 15px;
+            }
+            .image-container {
+                flex-direction: column;
+                gap: 10px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="nav-back">← Back to Homepage</a>
+        <h1 class="page-title">Flowtron Project</h1>
+        <p class="intro-text">An innovative mechanical device designed to measure water velocity at any point in a river, including at any depth.</p>
+
+        <section class="project-section">
+                <div class="content-section">
+                    <h3>Why am I doing this?</h3>
+                    <p>This project stems from hydrology data gaps I encountered during  Geosensing research. Without data on river flow velocity, wetted perimeter, and thalweg  location, it’s impossible to construct hydrographs for rainfall events, making it difficult to  determine key basin traits like the time of concentration—crucial for flood prediction. </p>
+                    <p><b>Software Used:</b> Autodesk Fusion (3D design), Autodesk Eagle (PCB design), GeoGebra  (pin placement). </p>
+                    <p><b>What do I have in mind?</b> The FlowTron must be entirely mechanical—no sensor-based  systems such as ultrasonic sensors, which are bulky and unsuitable for a submarine  chassis. Within this framework, I began with the ball-in-tube (BIT) mechanism: a tube (T)  open to flowing water at both ends, with an aerodynamically shaped ball that moves with the  current. The ball’s speed—measured by infrared sensors near the ends of T—represents the  water’s true velocity. </p>
+                    <p>The challenge associated with the BIT is handling the return of the ball, so that it can be  used for measurement repeatedly. To that end, I am experimenting with reset mechanisms:</p>
+                    <ul>
+                        <li><b>Magnetic Track (MT):</b> Inspired by the LHC at CERN, this consists of an  approximately U-shaped (cycloidal) tube surrounded by electromagnets that  accelerate a ball containing an iron core. However, this design is disadvantageous—it is heavy and mounted directly onto T,  preventing T from rotating freely about a vertical axis through its midpoint, and thus  limiting its ability to detect minor directional variations in river flow</li>
+                        <p></p>
+                        <li><b>Peristalsis-Push-Pins (PPP):</b> To address the limitations of previous designs, I  introduced the PPP mechanism, which separates the BIT and reset functions. PPP  consists of evenly spaced pins along the inner surface of a bowl-shaped body (B)  with a top cover. In the first version (P1), each pin acts as a push–pull linear actuator  that moves vertically, propelling the ball forward. A demonstration using eight such  pins (manufactured by YANKEE Electric) arranged in a straight line is shown here.</li>
+                              <div style="width: 12.5%; margin: 0 auto;">
+                                 <video controls style="width: 100%; border-radius: 8px;">
+                                     <source src="images/flowtron/ballrollingmech.MP4" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                 </video>
+                             </div>
+                        <ul>
+                            <p></p>
+                            <li>In this setup, the final destination coincides with the starting point of T (A),  allowing T to respond to directional changes in water velocity even while the  ball is returning. At each moment, the most efficient current path (CP) is  calculated — the route from the ball’s current position to the time- or angle dependent position of A. This path includes a central locomotion portion (LP),  where pins push the ball forward, and guardrails (GP) on either side, formed  by fully extended pins.</li>
+                           <p></p>
+                            <div style="text-align: center;">
+                                <img  src="images/flowtron/layout.jpg" alt="Mech 3"  style="width: 30%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                           </div>
+                           <p></p>
+                            <p></p>
+                            <li>I am currently experimenting with pin designs. Solenoids are not ideal since  they rely on electromagnetic induction and overheat when extended for long  durations, as required for the guardrail function. Moreover, the ball travels  farthest when the angle between the pin and the tangent to the bowl surface  (TAN) is about 45–60°. Therefore, a design allowing the push-stick (PS) to  adjust its angle relative to TAN is desirable. This adjustable design, referred  to as PRotate, would also reduce the total number of pins (currently estimated  at 300).</li>
+                            <p></p>
+                            <li>One PRotate design uses a gear and gear rack to drive the push-stick  forward. The gear rack is mounted on a rectangular support that can rotate  about the gear’s axis. See the CAD design here, as well as a manually driven  3D-printed prototype. The main engineering challenge lies in enabling both  the gear rotation and the rack-support rotation to be powered by a single  motor.</li>
+                             <p></p>
+                            <div style="text-align: center;">
+                                <img  src="images/flowtron/pinver1photo1.jpg" alt="Mech 3"  style="width: 30%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                <img  src="images/flowtron/pinver1photo2.jpg" alt="Mech 3"  style="width: 30%; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                           </div>
+                           <p></p>
+                        </ul>
+                    </ul>
+                </div>
+            </div>
+        </section>
+   
+</body>
+</html>
