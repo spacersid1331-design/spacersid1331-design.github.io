@@ -736,6 +736,7 @@
         // Carousel functionality for all sections
         function initializeCarousel(carouselId, dotsId, moveFunction) {
             const track = document.getElementById(carouselId);
+            if (!track) return function() {}; // Safety check
             const slides = track.getElementsByClassName('carousel-slide');
             const dotsContainer = document.getElementById(dotsId);
             let currentSlide = 0;
@@ -744,7 +745,10 @@
             for (let i = 0; i < slides.length; i++) {
                 const dot = document.createElement('div');
                 dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-                dot.onclick = () => goToSlide(i);
+                //dot.onclick = () => goToSlide(i);
+                (function(index) {
+                    dot.onclick = function() { goToSlide(index); };
+                })(i);
                 dotsContainer.appendChild(dot);
             }
 
@@ -759,7 +763,9 @@
             // Go to specific slide
             function goToSlide(index) {
                 currentSlide = index;
-                track.style.transform = `translateX(-${currentSlide * 100}%)`;
+               // track.style.transform = `translateX(-${currentSlide * 100}%)`;
+                track.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
+                track.style.webkitTransform = 'translateX(-' + (currentSlide * 100) + '%)'; // Safari prefix
                 updateDots();
             }
 
